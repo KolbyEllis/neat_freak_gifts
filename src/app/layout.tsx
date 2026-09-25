@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Fredoka({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
 });
 
-const body = DM_Sans({
+const body = Nunito({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Neat Freak Gifts",
+  title: "Neat Freak Gifts | One Stop Shop for Personal, Unique Gifts",
   description:
-    "Thoughtful gifts for people who love order, beauty, and the little details.",
+    "Fun, festive gifts from our 5-year Etsy shop: books by color, candy by color, blind date with a book, and unique finds for everyone.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

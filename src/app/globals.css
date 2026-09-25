@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #1c2b24;
-  --mint: #7db89a;
-  --mint-deep: #3f7a5e;
-  --sand: #e8e2d6;
-  --paper: #f7f4ee;
-  --blush: #d9897a;
+  --berry: #8b1e3f;
+  --berry-deep: #5c1028;
+  --gold: #f0b429;
+  --candy: #ff6b8a;
+  --evergreen: #1f6b4a;
+  --ink: #24151c;
+  --paper: #fff8f2;
+  --frost: #ffe8ef;
   --background: var(--paper);
   --foreground: var(--ink);
 }
@@ -14,12 +16,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-berry: var(--berry);
+  --color-berry-deep: var(--berry-deep);
+  --color-gold: var(--gold);
+  --color-candy: var(--candy);
+  --color-evergreen: var(--evergreen);
   --color-ink: var(--ink);
-  --color-mint: var(--mint);
-  --color-mint-deep: var(--mint-deep);
-  --color-sand: var(--sand);
   --color-paper: var(--paper);
-  --color-blush: var(--blush);
+  --color-frost: var(--frost);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
 }
@@ -27,13 +31,33 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), Georgia, serif;
+  font-family: var(--font-body), system-ui, sans-serif;
 }
 
-@keyframes rise-in {
+@keyframes confetti-float {
+  0% {
+    transform: translateY(8px) rotate(-4deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes soft-zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -41,41 +65,30 @@ body {
   }
 }
 
-@keyframes soft-zoom {
-  from {
-    transform: scale(1.06);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes underline-draw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
 .animate-rise {
-  animation: rise-in 0.9s ease-out both;
+  animation: rise 0.85s ease-out both;
 }
 
 .animate-rise-delay {
-  animation: rise-in 0.9s ease-out 0.18s both;
+  animation: rise 0.85s ease-out 0.15s both;
 }
 
 .animate-rise-delay-2 {
-  animation: rise-in 0.9s ease-out 0.34s both;
+  animation: rise 0.85s ease-out 0.3s both;
 }
 
-.hero-media {
-  animation: soft-zoom 8s ease-out both;
+.animate-confetti {
+  animation: confetti-float 0.9s ease-out both;
 }
 
-.brand-underline {
-  transform-origin: left;
-  animation: underline-draw 0.8s ease-out 0.5s both;
+.hero-zoom {
+  animation: soft-zoom 10s ease-out both;
+}
+
+.festive-dots {
+  background-image: radial-gradient(circle at 20% 20%, #ff6b8a33 0 3px, transparent 4px),
+    radial-gradient(circle at 80% 30%, #f0b42944 0 4px, transparent 5px),
+    radial-gradient(circle at 40% 70%, #1f6b4a33 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 80%, #8b1e3f22 0 5px, transparent 6px);
+  background-size: 120px 120px;
 }
