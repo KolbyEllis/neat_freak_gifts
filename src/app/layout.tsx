@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
+import { SiteHeader } from "@/components/SiteHeader";
+import { CartProvider } from "@/lib/cart";
 import "./globals.css";
 
 const display = Fredoka({
@@ -20,13 +22,22 @@ export const metadata: Metadata = {
     "Fun, festive gifts from our 5-year Etsy shop: books by color, candy by color, blind date with a book, and unique finds for everyone.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <CartProvider>
+          <SiteHeader />
+          <div className="flex-1">{children}</div>
+        </CartProvider>
+      </body>
     </html>
   );
 }

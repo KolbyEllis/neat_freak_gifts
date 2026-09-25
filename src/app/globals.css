@@ -92,3 +92,72 @@ body {
     radial-gradient(circle at 70% 80%, #8b1e3f22 0 5px, transparent 6px);
   background-size: 120px 120px;
 }
+
+/* Keyboard-key press: hover sinks the face, active bottoms out */
+.key-press {
+  --key-depth: 6px;
+  --key-shadow: #5c1028;
+  position: relative;
+  transform: translateY(0);
+  box-shadow: 0 var(--key-depth) 0 var(--key-shadow);
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.9, 0.3, 1.2),
+    box-shadow 140ms cubic-bezier(0.2, 0.9, 0.3, 1.2),
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+  will-change: transform, box-shadow;
+}
+
+.key-press:hover:not(:disabled) {
+  transform: translateY(calc(var(--key-depth) * 0.45));
+  box-shadow: 0 calc(var(--key-depth) * 0.55) 0 var(--key-shadow);
+}
+
+.key-press:active:not(:disabled) {
+  transform: translateY(var(--key-depth));
+  box-shadow: 0 0 0 var(--key-shadow);
+  transition-duration: 70ms;
+}
+
+.key-press:disabled {
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--key-shadow) 35%, transparent);
+  cursor: not-allowed;
+}
+
+.key-press-sm {
+  --key-depth: 4px;
+}
+
+.key-press-lg {
+  --key-depth: 8px;
+}
+
+.key-press-gold {
+  --key-shadow: #c58a00;
+}
+
+.key-press-candy {
+  --key-shadow: #d9486a;
+}
+
+.key-press-berry {
+  --key-shadow: #5c1028;
+}
+
+.key-press-frost {
+  --key-shadow: #e8b8c8;
+}
+
+.key-press-paper {
+  --key-shadow: rgba(255, 248, 242, 0.35);
+}
+
+.key-press-card {
+  --key-depth: 10px;
+  --key-shadow: rgba(139, 30, 63, 0.14);
+}
+
+.key-press-card:hover {
+  border-color: color-mix(in srgb, var(--berry) 28%, transparent);
+}

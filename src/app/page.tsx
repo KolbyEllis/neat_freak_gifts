@@ -1,7 +1,8 @@
 import { Storefront } from "@/components/Storefront";
 import { getProducts } from "@/lib/etsy";
 
-export const revalidate = 3600;
+/** Refresh the storefront from Etsy once per day. */
+export const revalidate = 86400;
 
 export default async function Home() {
   const { products, source } = await getProducts();

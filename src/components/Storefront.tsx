@@ -1,18 +1,27 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
+import { AddToCartButton } from "@/components/AddToCartButton";
 import {
   CATEGORIES,
   formatPrice,
   Product,
   ProductCategory,
+  productPath,
 } from "@/lib/products";
 
 type Props = {
   products: Product[];
-  source: "etsy" | "seed";
+  source: "etsy" | "rss" | "seed";
 };
+
+function syncLabel(source: Props["source"]) {
+  if (source === "etsy") return "live from Etsy · updates daily";
+  if (source === "rss") return "synced from Etsy · updates daily";
+  return "catalog snapshot";
+}
 
 export function Storefront({ products, source }: Props) {
   const [category, setCategory] = useState<ProductCategory>("all");
@@ -55,7 +64,7 @@ export function Storefront({ products, source }: Props) {
           <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
             <a
               href="#shop"
-              className="rounded-full bg-gold px-6 py-3 text-sm font-extrabold text-ink shadow-[0_8px_0_#c58a00] transition hover:-translate-y-0.5"
+              className="key-press key-press-lg key-press-gold rounded-full bg-gold px-6 py-3 text-sm font-extrabold text-ink"
             >
               Shop the fun
             </a>
@@ -63,7 +72,7 @@ export function Storefront({ products, source }: Props) {
               href="https://www.etsy.com/shop/NeatFreakGifts"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border-2 border-paper/70 px-6 py-3 text-sm font-extrabold text-paper transition hover:bg-paper/10"
+              className="key-press key-press-lg key-press-paper rounded-full border-2 border-paper/70 bg-berry/20 px-6 py-3 text-sm font-extrabold text-paper hover:bg-paper/15"
             >
               Visit our Etsy shop
             </a>
@@ -105,8 +114,8 @@ export function Storefront({ products, source }: Props) {
             </h2>
             <p className="mt-2 text-sm text-ink/70">
               {availableCount} available
-              {soldOutCount ? ` · ${soldOutCount} sold out` : ""} · synced from
-              Etsy ({source === "etsy" ? "live" : "catalog snapshot"})
+              {soldOutCount ? ` · ${soldOutCount} sold out` : ""} ·{" "}
+              {syncLabel(source)}
             </p>
           </div>
         </div>
@@ -119,10 +128,10 @@ export function Storefront({ products, source }: Props) {
                 key={item.id}
                 type="button"
                 onClick={() => setCategory(item.id)}
-                className={`rounded-full px-4 py-2 text-sm font-bold transition ${
+                className={`key-press key-press-sm rounded-full px-4 py-2 text-sm font-bold ${
                   active
-                    ? "bg-berry text-paper"
-                    : "bg-frost text-ink hover:bg-candy/20"
+                    ? "key-press-berry bg-berry text-paper"
+                    : "key-press-frost bg-frost text-ink hover:bg-candy/20"
                 }`}
               >
                 {item.label}
@@ -137,48 +146,45 @@ export function Storefront({ products, source }: Props) {
             return (
               <article
                 key={product.id}
-                className="overflow-hidden rounded-2xl border border-berry/10 bg-white shadow-[0_10px_0_rgba(139,30,63,0.08)]"
+                className="key-press key-press-card group overflow-hidden rounded-2xl border border-berry/10 bg-white"
               >
-                <div className="relative aspect-[4/3] bg-frost">
-                  {product.image ? (
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      fill
-                      className={`object-cover ${soldOut ? "grayscale opacity-70" : ""}`}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  ) : null}
+                <Link href={productPath(product.id)} className="block">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-frost">
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.title}
+                        fill
+                        className={`object-cover transition duration-500 ease-out group-hover:scale-105 ${soldOut ? "grayscale opacity-70" : ""}`}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    ) : null}
+                    {soldOut ? (
+                      <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-paper">
+                        Sold out
+                      </span>
+                    ) : (
+                      <span className="absolute left-3 top-3 rounded-full bg-evergreen px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-paper">
+                        Available
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-4 pb-0">
+                    <h3 className="line-clamp-2 font-[family-name:var(--font-display)] text-lg font-semibold leading-snug group-hover:text-berry">
+                      {product.title}
+                    </h3>
+                    <p className="mt-2 text-base font-extrabold text-berry">
+                      {formatPrice(product.price, product.currency)}
+                    </p>
+                  </div>
+                </Link>
+                <div className="p-4 pt-3">
                   {soldOut ? (
-                    <span className="absolute left-3 top-3 rounded-full bg-ink px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-paper">
-                      Sold out
-                    </span>
-                  ) : (
-                    <span className="absolute left-3 top-3 rounded-full bg-evergreen px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-paper">
-                      Available
-                    </span>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="line-clamp-2 font-[family-name:var(--font-display)] text-lg font-semibold leading-snug">
-                    {product.title}
-                  </h3>
-                  <p className="mt-2 text-base font-extrabold text-berry">
-                    {formatPrice(product.price, product.currency)}
-                  </p>
-                  {soldOut ? (
-                    <p className="mt-4 text-sm font-semibold text-ink/55">
-                      This listing is sold out on Etsy.
+                    <p className="text-sm font-semibold text-ink/55">
+                      This listing is sold out.
                     </p>
                   ) : (
-                    <a
-                      href={product.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 inline-flex rounded-full bg-candy px-4 py-2 text-sm font-extrabold text-ink transition hover:bg-gold"
-                    >
-                      Buy on Etsy
-                    </a>
+                    <AddToCartButton product={product} />
                   )}
                 </div>
               </article>

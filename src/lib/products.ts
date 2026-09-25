@@ -9,6 +9,7 @@ export type Product = {
   currency: string;
   state: ProductState;
   category: ProductCategory;
+  description: string;
 };
 
 export type ProductCategory =
@@ -62,4 +63,12 @@ export function formatPrice(price: number, currency = "USD") {
     style: "currency",
     currency,
   }).format(price);
+}
+
+export function categoryLabel(category: ProductCategory) {
+  return CATEGORIES.find((item) => item.id === category)?.label ?? "Gift";
+}
+
+export function productPath(id: string) {
+  return `/product/${id}`;
 }
